@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-course-details',
@@ -6,7 +6,15 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
   styleUrls: ['./course-details.component.scss'],
 })
 export class CourseDetailsComponent {
-  @Input() course;
+  selectedCourse;
+  originalTitle;
   @Output() save = new EventEmitter();
   @Output() cancel = new EventEmitter();
+
+  @Input() set course(value) {
+    if (value) {
+      this.selectedCourse = Object.assign({}, value);
+      this.originalTitle = value.title;
+    }
+  }
 }
