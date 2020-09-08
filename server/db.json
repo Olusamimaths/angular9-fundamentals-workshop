@@ -2,9 +2,23 @@
   "courses": [
     {
       "id": 1,
-      "title": "Angular 9 Fundamentals",
+      "title": "Angular 9 Fundamentals Part 2",
       "description": "Learn the fundamentals of Angular 9",
       "percentComplete": 26,
+      "favorite": true
+    },
+    {
+      "id": 7,
+      "title": "Best Course on Earth",
+      "description": "By Olusola Samuel",
+      "percentComplete": 0,
+      "favorite": true
+    },
+    {
+      "id": 8,
+      "title": "Visual JavaScript",
+      "description": "By Olusola Samuel",
+      "percentComplete": 100,
       "favorite": true
     }
   ]

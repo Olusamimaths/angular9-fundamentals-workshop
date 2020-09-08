@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { CoursesService } from '../shared/services/courses.service';
 
 @Component({
   selector: 'app-courses',
@@ -7,36 +8,23 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CoursesComponent implements OnInit {
   selectedCourse = null;
-  courses = [
-    {
-      id: 1,
-      title: 'Angular 9 Fundamentals',
-      description: 'Learn the fundamentals of Angular 9',
-      percentComplete: 26,
-      favorite: true,
-    },
-    {
-      id: 2,
-      title: 'Angular 6 Fundamentals',
-      description: 'Learn the fundamentals of Angular 6',
-      percentComplete: 34,
-      favorite: true,
-    },
-    {
-      id: 3,
-      title: 'Start with Why',
-      description: 'Why businesses fail',
-      percentComplete: 74,
-      favorite: true,
-    },
-  ];
+  courses = null;
 
-  constructor() {}
+  constructor(private coursesService: CoursesService) {}
 
   ngOnInit(): void {
     this.resetSelectedCourse();
+    this.loadCourses();
   }
 
+  loadCourses() {
+    this.coursesService.all().subscribe((courses) => (this.courses = courses));
+  }
+
+  refreshCourses() {
+    this.resetSelectedCourse();
+    this.loadCourses();
+  }
   resetSelectedCourse() {
     const emptyCourse = {
       id: null,
@@ -53,8 +41,18 @@ export class CoursesComponent implements OnInit {
     this.resetSelectedCourse();
   }
 
-  saveCourse() {
-    console.log("Save course")
+  saveCourse(course) {
+    if (course.id) {
+      this.coursesService
+        .update(course)
+        .subscribe((result) => this.refreshCourses());
+    } else {
+      this.coursesService
+        .create(course)
+        .subscribe((result) => this.refreshCourses());
+
+      this.resetSelectedCourse();
+    }
   }
 
   selectCourse(course: string) {
@@ -62,6 +60,8 @@ export class CoursesComponent implements OnInit {
   }
 
   deleteCourse(courseId) {
-    this.courses.filter((course) => course.id !== courseId);
+    this.coursesService
+      .delete(courseId)
+      .subscribe((result) => this.refreshCourses());
   }
 }
